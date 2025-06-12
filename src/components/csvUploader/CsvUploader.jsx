@@ -15,6 +15,7 @@ const CsvUploader = ({ isLoading, setIsLoading }) => {
     "La aplicación está cargando, por favor espere antes de usar."
   );
 
+  // TODO: refactorizar los mensajes para no repetir código.
   const API_URL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     const loadDefaultCsv = async () => {
@@ -173,7 +174,7 @@ const CsvUploader = ({ isLoading, setIsLoading }) => {
           className="btn btn-success margin-right"
           onClick={handleSave}
         >
-          Guardar CSV
+          Confirmar carga de CSV
         </button>
       )}
       {errorAlertText && errorAlertText !== "" && (

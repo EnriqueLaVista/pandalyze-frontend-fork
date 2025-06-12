@@ -2,63 +2,97 @@
   {
     "id": 1,
     "title": "Lagos con superficie mayor a 100km²",
-    "blocks": {
+    "workspace": {
+      "variables": [],
+      "csvsData": [
+        {
+          "id": 1,
+          "filename": "Lagos.csv",
+          "columnsNames": [
+            "Nombre",
+            "Ubicación",
+            "Superficie (km²)",
+            "Profundidad máxima (m)",
+            "Profundidad media (m)",
+            "Coordenadas",
+            "Sup Tamaño",
+            "Latitud en GMS",
+            "Longitud en GMS",
+            "lat",
+            "lng"
+          ]
+        }
+      ],
       "blocks": {
-        "languageVersion": 0,
-        "blocks": [
-          {
-            "type": "print_with_argument",
-            "id": "UFjDEr:G3vhC(a/9f0,J",
-            "x": 23,
-            "y": 104,
-            "inputs": {
-              "ARGUMENT": {
-                "block": {
-                  "type": "primitive_text",
-                  "id": "wBeQ%_+h,vkrX@z/B(]4",
-                  "fields": { "TEXT": "Lagos con superficie mayor a 100km²:" }
+        "blocks": {
+          "languageVersion": 0,
+          "blocks": [
+            {
+              "type": "print_with_argument",
+              "id": "UFjDEr:G3vhC(a/9f0,J",
+              "x": 23,
+              "y": 104,
+              "inputs": {
+                "ARGUMENT": {
+                  "block": {
+                    "type": "primitive_text",
+                    "id": "wBeQ%_+h,vkrX@z/B(]4",
+                    "fields": {
+                      "TEXT": "Lagos con superficie mayor a 100km²:"
+                    }
+                  }
                 }
-              }
-            },
-            "next": {
-              "block": {
-                "type": "print_with_argument",
-                "id": "x`#=$+7(?Dgb7y8y9Mj|",
-                "inputs": {
-                  "ARGUMENT": {
-                    "block": {
-                      "type": "comparison",
-                      "id": "O:gv!UB4WJwZRdk[`bFt",
-                      "fields": { "OPERATOR": "GREATER_THAN" },
-                      "inputs": {
-                        "dataFrameValue": {
-                          "block": {
-                            "type": "read_csv",
-                            "id": "rwxHu/|]r)^~s^dF/eWo",
-                            "fields": { "csvOptions": "205" }
-                          }
+              },
+              "next": {
+                "block": {
+                  "type": "print_with_argument",
+                  "id": "x`#=$+7(?Dgb7y8y9Mj|",
+                  "inputs": {
+                    "ARGUMENT": {
+                      "block": {
+                        "type": "comparison",
+                        "id": "O:gv!UB4WJwZRdk[`bFt",
+                        "fields": {
+                          "OPERATOR": "GREATER_THAN"
                         },
-                        "columnNameValue": {
-                          "block": {
-                            "type": "property",
-                            "id": "hvaFfm4]l@j%zd$|H3(D",
-                            "fields": { "dropdown": "Superficie (km²)" },
-                            "inputs": {
-                              "blockInput": {
-                                "block": {
-                                  "type": "read_csv",
-                                  "id": "%mZ|{yLz~V`#V8mBm5,O",
-                                  "fields": { "csvOptions": "205" }
+                        "inputs": {
+                          "dataFrameValue": {
+                            "block": {
+                              "type": "read_csv",
+                              "id": "rwxHu/|]r)^~s^dF/eWo",
+                              "fields": {
+                                "csvOptions": "1"
+                              }
+                            }
+                          },
+                          "columnNameValue": {
+                            "block": {
+                              "type": "property",
+                              "id": "hvaFfm4]l@j%zd$|H3(D",
+                              "fields": {
+                                "dropdown": "Superficie (km²)"
+                              },
+                              "inputs": {
+                                "blockInput": {
+                                  "block": {
+                                    "type": "read_csv",
+                                    "id": "%mZ|{yLz~V`#V8mBm5,O",
+                                    "fields": {
+                                      "csvOptions": "1"
+                                    }
+                                  }
                                 }
                               }
                             }
-                          }
-                        },
-                        "rightValue": {
-                          "block": {
-                            "type": "primitive_number",
-                            "id": "LHXKCVQ.PWzsZQT4!BG$",
-                            "fields": { "NUMBER": 100 }
+                          },
+                          "rightValue": {
+                            "block": {
+                              "type": "primitive_number",
+                              "id": "LHXKCVQ.PWzsZQT4!BG$",
+                              "fields": {
+                                "NUMBER": 100
+                              }
+                            }
                           }
                         }
                       }
@@ -67,8 +101,8 @@
                 }
               }
             }
-          }
-        ]
+          ]
+        }
       }
     }
   }

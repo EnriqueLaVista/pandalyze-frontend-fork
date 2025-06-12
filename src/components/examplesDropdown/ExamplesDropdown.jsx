@@ -1,6 +1,6 @@
 import React from "react";
 import examplesData from "./examples.json";
-import Blockly from "blockly";
+import BlocksService from "../blocksEditor/services/BlocksService";
 
 const ExamplesDropdown = ({ loadingExampleRef, isLoading }) => {
   const handleDropdownItemClick = (exampleTitle) => {
@@ -14,13 +14,12 @@ const ExamplesDropdown = ({ loadingExampleRef, isLoading }) => {
   const loadExampleBlocksIntoWorkspace = (selectedExample) => {
     if (selectedExample) {
       loadingExampleRef.current = selectedExample.id;
-      Blockly.serialization.workspaces.load(
-        selectedExample.blocks,
-        Blockly.getMainWorkspace()
-      );
+      BlocksService.onWorkspaceLoad(selectedExample.workspace);
     }
   };
 
+  // TODO: cambiar la lectura de las opciones para tener varios
+  // ejemplos en distintos archivos sin llenar tanto un único JSON.
   return (
     <div className="dropdown">
       <button

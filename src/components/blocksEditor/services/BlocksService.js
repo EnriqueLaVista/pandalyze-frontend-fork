@@ -29,6 +29,7 @@ import { initScatterBlock } from "../constants/blocks/plotly/scatterBlock";
 import { initBarBlock } from "../constants/blocks/plotly/barBlock";
 import { initPieBlock } from "../constants/blocks/plotly/pieBlock";
 import { initShowInConsoleBlock } from "../constants/blocks/plotly/showInConsoleBlock";
+import defaultBlocks from "../constants/blocks/defaultBlocks.json";
 
 const BlocksService = {
   variables: [],
@@ -110,6 +111,107 @@ const BlocksService = {
     }
   },
 
+  loadWorkspace(workspace) {
+    // Guardar el workspace para cargarlo de nuevo en caso de error.
+    const backupWorkspace = this.getCurrentWorkspace();
+
+    try {
+      // sobreescribir variables.
+      // puede fallar si se modificó el contenido.
+      this.variables = workspace.variables;
+      this.updateVariablesDrowdown();
+
+      // sobreescribir el workspace de blockly.
+      // puede fallar si se modificó el contenido. por ejemplo intentando poner
+      // un nombre de un bloque que no existe.
+      Blockly.serialization.workspaces.load(
+        workspace.blocks, 
+        Blockly.getMainWorkspace()
+      );
+
+      // Refrescar para evitar errores en los datos cargados
+      BlocksService.refreshWorkspace();
+
+      // no falló nada.
+      return '';
+    } catch(e) {
+      // falló cargar el archivo leído.
+      // TODO: ver si esta recursión genera problemas. creería que no(?)
+      this.loadWorkspace(backupWorkspace);
+      return 'Hay un error en el archivo por lo que no puede ser cargado.';
+    };
+  },
+
+  updateVariablesDrowdown() {
+    // Actualizar las opciones de los bloques get y set
+    Blockly.Blocks["variables_get"].generateOptions = function () {
+      return BlocksService.variables.map((variable, index) => [
+        variable,
+        index.toString(),
+      ]);
+    };
+
+    Blockly.Blocks["variables_set"].generateOptions = function () {
+      return BlocksService.variables.map((variable, index) => [
+        variable,
+        index.toString(),
+      ]);
+    };
+  },
+
+  getCurrentWorkspace() {
+    // Devolver el workspace actual.
+
+    const getCsvFilesInUse = () => {
+      // Obtener los nombres de los archivos csv que están seleccionados en los
+      // bloques csv.
+      // TODO: como se mantiene el id de los csv quizá esta solución no es la 
+      // correcta. Pero todo depende de qué es el id de los csv y cómo se genera.
+      // Parece que los id se usan para elegir cual csv usar en los bloques de csv
+      // asi que se tienen que mantener. Pero no sé si son únicos para cada csv aún.
+      const csvNames = Blockly.getMainWorkspace().getBlocksByType("read_csv").map(
+        b => b.getField("csvOptions").getText()
+      );
+      // Retornar toda la info de los csv que se están usando.
+      // Se rompe si se repite??? no creo pero considerable.
+      return this.csvsData.filter(c => csvNames.includes(c.filename))
+    };
+
+    return {
+      variables: this.variables,
+      csvsData: getCsvFilesInUse(),
+      blocks: Blockly.serialization.workspaces.save(Blockly.getMainWorkspace())
+    };
+  },
+
+  onWorkspaceLoad(workspace) {
+    // Se ejecuta cuando se quiere cargar un workspace. 
+    // Verifica que no falten CSV y carga las variables junto al workspace de Blockly.
+
+    // verificar que los csv del workspace cargado esten cargados.
+    // (true si newCsvsData está "incluido" en this.csvsData, false sino).
+    console.log(': ',workspace);
+    const areCsvsLoaded = workspace.csvsData.every(
+      c1 => this.csvsData.some(
+        c2 => JSON.stringify(c1) == JSON.stringify(c2)
+      )
+    );
+
+    // TODO: de esta forma el orden en que se cargan los csv importa? como se usa el 
+    // id para elegir el csv creo que no interesa el orden.
+    // TODO: implementar una solución donde el orden de carga no importe? 
+    // (aunque sí importa para otras cosas asi que podría ser mejor dejarlo así 
+    // y aclarar que importa en un cartel)
+    if (areCsvsLoaded) {
+      const response = this.loadWorkspace(workspace);
+      console.log(response);
+      return response;
+    } else {
+      // faltan cargar archivos csv usados en la solución.
+      return 'Asegúrese de cargar los archivos CSV que usó anteriormente e intente nuevamente.';
+    };
+  },
+
   onCreateVariableClick(button) {
     const variableName = prompt("Nombra tu variable:");
     if (
@@ -119,28 +221,18 @@ const BlocksService = {
     ) {
       this.variables.push(variableName);
 
-      // Actualizar las opciones de los bloques get y set
-      Blockly.Blocks["variables_get"].generateOptions = function () {
-        return BlocksService.variables.map((variable, index) => [
-          variable,
-          index.toString(),
-        ]);
-      };
-
-      Blockly.Blocks["variables_set"].generateOptions = function () {
-        return BlocksService.variables.map((variable, index) => [
-          variable,
-          index.toString(),
-        ]);
-      };
-
+      this.updateVariablesDrowdown();
+      
       if (this.variables.length === 1) {
         // Actualizar la flyout en el workspace
         const flyout = Blockly.getMainWorkspace().getFlyout();
         flyout.hide();
         flyout.show(toolbox);
-      }
-
+      };
+      
+      // TODO: creo que actualizar así causa que los bloques pierdan sus 
+      // valores si usan selectbox que dependan de otro bloque, como los
+      // de selección de columnas.
       this.refreshWorkspace();
       return "";
     } else if (variableName?.trim() === "") {

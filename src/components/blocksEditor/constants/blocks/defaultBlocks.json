@@ -1,37 +1,65 @@
 {
+  "variables": [],
+  "csvsData": [
+    {
+      "id": 1,
+      "filename": "Lagos.csv",
+      "columnsNames": [
+        "Nombre",
+        "Ubicación",
+        "Superficie (km²)",
+        "Profundidad máxima (m)",
+        "Profundidad media (m)",
+        "Coordenadas",
+        "Sup Tamaño",
+        "Latitud en GMS",
+        "Longitud en GMS",
+        "lat",
+        "lng"
+      ]
+    }
+  ],
   "blocks": {
-    "languageVersion": 0,
-    "blocks": [
-      {
-        "type": "print_with_argument",
-        "id": "UFjDEr:G3vhC(a/9f0,J",
-        "x": 23,
-        "y": 104,
-        "inputs": {
-          "ARGUMENT": {
-            "block": {
-              "type": "primitive_text",
-              "id": "wBeQ%_+h,vkrX@z/B(]4",
-              "fields": { "TEXT": "Primeras 10 filas:" }
+    "blocks": {
+      "languageVersion": 0,
+      "blocks": [
+        {
+          "type": "print_with_argument",
+          "id": "UFjDEr:G3vhC(a/9f0,J",
+          "x": 23,
+          "y": 104,
+          "inputs": {
+            "ARGUMENT": {
+              "block": {
+                "type": "primitive_text",
+                "id": "wBeQ%_+h,vkrX@z/B(]4",
+                "fields": {
+                  "TEXT": "Primeras 10 filas:"
+                }
+              }
             }
-          }
-        },
-        "next": {
-          "block": {
-            "type": "print_with_argument",
-            "id": "x`#=$+7(?Dgb7y8y9Mj|",
-            "inputs": {
-              "ARGUMENT": {
-                "block": {
-                  "type": "head",
-                  "id": "YeCzcq^{vn7R)NgeR]mL",
-                  "fields": { "argument": "10" },
-                  "inputs": {
-                    "VALUE": {
-                      "block": {
-                        "type": "read_csv",
-                        "id": "%mZ|{yLz~V`#V8mBm5,O",
-                        "fields": { "csvOptions": "171" }
+          },
+          "next": {
+            "block": {
+              "type": "print_with_argument",
+              "id": "x`#=$+7(?Dgb7y8y9Mj|",
+              "inputs": {
+                "ARGUMENT": {
+                  "block": {
+                    "type": "head",
+                    "id": "YeCzcq^{vn7R)NgeR]mL",
+                    "fields": {
+                      "argument": "10"
+                    },
+                    "inputs": {
+                      "VALUE": {
+                        "block": {
+                          "type": "read_csv",
+                          "id": "%mZ|{yLz~V`#V8mBm5,O",
+                          "fields": {
+                            "csvOptions": "1"
+                          }
+                        }
                       }
                     }
                   }
@@ -40,7 +68,7 @@
             }
           }
         }
-      }
-    ]
+      ]
+    }
   }
 }

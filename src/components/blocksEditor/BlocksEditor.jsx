@@ -85,10 +85,14 @@ const BlocksEditor = ({ updateCode, isLoading, setIsLoading }) => {
     });
 
     //TODO: Hace falta tener esto si tenemos los ejemplos?
-    Blockly.serialization.workspaces.load(defaultBlocks, workspace);
+    // TODO: usar onWorkspaceLoad pero se tiene que esperar que termine de cargar
+    // el csv antes de poder usarlo. Si se deja asi y se modifica el archivo con
+    // los bloques por defecto quizá se rompa sin querer aunque no se debería modificar.
+    BlocksService.loadWorkspace(defaultBlocks);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // TODO: refactorizar los mensajes para no repetir código.
   const handleCreateVariableClick = () => {
     const result = BlocksService.onCreateVariableClick();
     if (result && result !== "") {
@@ -128,7 +132,7 @@ const BlocksEditor = ({ updateCode, isLoading, setIsLoading }) => {
           loadingExampleRef={loadingExampleRef}
           isLoading={isLoading}
         />
-        <WorkspaceJsonUploader />
+        <WorkspaceJsonUploader isLoading={isLoading} setIsLoading={setIsLoading} />
       </div>
       <div id="blocklyDiv" style={{ height: "400px", width: "100%" }}></div>
       {openBlockInfoModal && (
