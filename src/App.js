@@ -16,8 +16,9 @@ function App() {
   // Función para realizar la solicitud a healthCheck
   const fetchHealthCheck = async () => {
     try {
+      const API_URL = process.env.REACT_APP_API_URL;
       const response = await fetch(
-        "https://pandalyze-backend-prod.onrender.com/healthCheck",
+        API_URL + "/healthCheck",
         {
           timeout: 5000, // 5 segundos por si se cuelga el back
         }
