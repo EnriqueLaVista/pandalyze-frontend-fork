@@ -190,9 +190,8 @@ const BlocksService = {
 
     // verificar que los csv del workspace cargado esten cargados.
     // (true si newCsvsData está "incluido" en this.csvsData, false sino).
-    console.log(': ',workspace);
-    const areCsvsLoaded = workspace.csvsData.every(
-      c1 => this.csvsData.some(
+    const missingCsvs = workspace.csvsData.filter(
+      c1 => !this.csvsData.some(
         c2 => JSON.stringify(c1) == JSON.stringify(c2)
       )
     );
@@ -202,13 +201,13 @@ const BlocksService = {
     // TODO: implementar una solución donde el orden de carga no importe? 
     // (aunque sí importa para otras cosas asi que podría ser mejor dejarlo así 
     // y aclarar que importa en un cartel)
-    if (areCsvsLoaded) {
+    if (missingCsvs.length == 0) {
       const response = this.loadWorkspace(workspace);
-      console.log(response);
       return response;
     } else {
       // faltan cargar archivos csv usados en la solución.
-      return 'Asegúrese de cargar los archivos CSV que usó anteriormente e intente nuevamente.';
+      const missingNames = missingCsvs.map(c => c.filename).join(", ");
+      return `Asegúrese de cargar los archivos CSV que usó anteriormente (${missingNames}) e intente nuevamente.`;
     };
   },
 

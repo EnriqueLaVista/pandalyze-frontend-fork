@@ -34,13 +34,13 @@ export const readPdlzFile = async (file) => {
   }
 
   const text = await file.text(); // TODO: ver si puede fallar sin permisos de lectura
-  console.log(text);
   try {
     const parsed = JSON.parse(text);
 
     // Ver si el contenido del archivo quedó respetado.
     // Cambiable a futuro si se decide agregar una firma.
-    if (!parsed._signature || !parsed.data) {
+    const claves = ['variables', 'csvsData', 'blocks'];
+    if (!parsed._signature || !claves.every(clave => clave in parsed.data)) {
         return 'El archivo no tiene un formato soportado.';
     }
 
