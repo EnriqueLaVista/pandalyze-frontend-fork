@@ -1,0 +1,53 @@
+{
+  "_signature": "PDLZ_v1::1750198300554",
+  "data": {
+    "variables": [
+      "tu_variable"
+    ],
+    "csvsData": [],
+    "blocks": {
+      "blocks": {
+        "languageVersion": 0,
+        "blocks": [
+          {
+            "type": "variables_set",
+            "id": "Y{,ei;x7{)PeK4KW-#OT",
+            "x": 202,
+            "y": 97,
+            "fields": {
+              "variableSetterKey": "0"
+            },
+            "inputs": {
+              "VALUE": {
+                "block": {
+                  "type": "primitive_text",
+                  "id": "DRIl)BqJt3SBL={-+x0A",
+                  "fields": {
+                    "TEXT": "Hola mundo!"
+                  }
+                }
+              }
+            },
+            "next": {
+              "block": {
+                "type": "print_with_argument",
+                "id": "QD/NA-|n5D/bD+^+(bgl",
+                "inputs": {
+                  "ARGUMENT": {
+                    "block": {
+                      "type": "variables_get",
+                      "id": "hIBB(MFHCT?wK5X;or1U",
+                      "fields": {
+                        "variableGetterKey": "0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

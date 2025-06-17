@@ -1,25 +1,30 @@
 import React from "react";
 import examplesData from "./examples.json";
 import BlocksService from "../blocksEditor/services/BlocksService";
+import {readPdlzFile}  from "../workspaceJsonUploader/PandalyzeReader"
 
 const ExamplesDropdown = ({ loadingExampleRef, isLoading }) => {
-  const handleDropdownItemClick = (exampleTitle) => {
-    const selectedExample = examplesData.find(
-      (example) => example.title === exampleTitle
-    );
-
-    loadExampleBlocksIntoWorkspace(selectedExample);
+  const handleDropdownItemClick = (exampleID) => {
+    loadExampleBlocksIntoWorkspace(exampleID, examplesData[exampleID]);
   };
 
-  const loadExampleBlocksIntoWorkspace = (selectedExample) => {
+  const loadExampleBlocksIntoWorkspace = async (exampleID, selectedExample) => {
     if (selectedExample) {
-      loadingExampleRef.current = selectedExample.id;
-      BlocksService.onWorkspaceLoad(selectedExample.workspace);
+      loadingExampleRef.current = exampleID;
+      // leer y convertir el ejemplo seleccionado a File para poder leerlo.
+      // type debe ser vacío por ser un .pdlz
+      const response = await fetch(selectedExample.path);
+      const blob = await response.blob();
+      const exampleWorkspace = await readPdlzFile( new File(
+        [blob], 
+        selectedExample.path.split("/").pop(), 
+        {type: ""}
+      ));
+
+      BlocksService.onWorkspaceLoad(exampleWorkspace);
     }
   };
 
-  // TODO: cambiar la lectura de las opciones para tener varios
-  // ejemplos en distintos archivos sin llenar tanto un único JSON.
   return (
     <div className="dropdown">
       <button
@@ -32,14 +37,14 @@ const ExamplesDropdown = ({ loadingExampleRef, isLoading }) => {
         Ejemplos
       </button>
       <ul className="dropdown-menu">
-        {examplesData.map((example) => (
-          <li key={example.title}>
+        {Object.entries(examplesData).map(([id, info]) => (
+          <li key={id}>
             <button
               className="dropdown-item"
               type="button"
-              onClick={() => handleDropdownItemClick(example.title)}
+              onClick={() => handleDropdownItemClick(id)}
             >
-              {example.title}
+              {info.title}
             </button>
           </li>
         ))}
