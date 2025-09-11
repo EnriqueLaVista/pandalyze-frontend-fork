@@ -23,13 +23,13 @@ export const blocksInfo = [
     blockType: "property",
     blockTitle: "'Columnas'",
     blockInfo:
-      "A partir de un DataFrame, obtiene sus columnas para poder operar con ellas.",
+      "A partir de un DataFrame obtiene sus columnas para poder operar con ellas.",
   },
   {
     blockType: "head",
     blockTitle: "'Head'",
     blockInfo:
-      "Por defecto obtiene las primeras 5 filas del DataFrame y, sino, se puede indicar la cantidad deseada.",
+      "Por defecto obtiene las primeras 5 filas del DataFrame. Se puede indicar la cantidad deseada.",
   },
   {
     blockType: "info",
@@ -103,24 +103,28 @@ export const blocksInfo = [
     blockTitle: "'Bar'",
     blockInfo:
       "Genera un gráfico de barras a partir de dos columnas del DataFrame (x, y).",
+    href: "https://www.youtube.com/watch?v=749-1jlHFmQ&t=63s"
   },
   {
     blockType: "line",
     blockTitle: "'Line'",
     blockInfo:
       "Genera un gráfico de líneas a partir de dos columnas del DataFrame (x, y).",
+    href: "https://www.youtube.com/watch?v=PMQG7aWkvvs"
   },
   {
     blockType: "pie",
     blockTitle: "'Pie'",
     blockInfo:
       "Genera un gráfico de torta a partir de dos columnas del DataFrame. La de 'values' debe ser numérica.",
+    href: "https://www.youtube.com/watch?v=0K59dDZwR8w"
   },
   {
     blockType: "scatter",
     blockTitle: "'Scatter'",
     blockInfo:
       "Genera un gráfico de puntos a partir de dos columnas del DataFrame (x, y).",
+    href: "https://www.youtube.com/watch?v=hf910fFeq-Y"
   },
   {
     blockType: "print_with_argument",
