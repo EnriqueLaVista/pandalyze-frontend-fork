@@ -1,5 +1,5 @@
 {
-  "_signature": "PDLZ_v1::1750195973184",
+  "_signature": "PDLZ_v1::1757621527175",
   "data": {
     "variables": [],
     "csvsData": [
@@ -67,6 +67,9 @@
                           "block": {
                             "type": "property",
                             "id": "hvaFfm4]l@j%zd$|H3(D",
+                            "extraState": {
+                              "selectedOption": "Superficie (km²)"
+                            },
                             "fields": {
                               "dropdown": "Superficie (km²)"
                             },

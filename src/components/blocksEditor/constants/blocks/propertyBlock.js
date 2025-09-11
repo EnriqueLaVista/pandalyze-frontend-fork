@@ -3,21 +3,6 @@ import { pythonGenerator } from "blockly/python";
 
 // Bloque encargado de tomar como input un bloque y si es un dataframe, listar sus columnas en un dropdown
 export const initPropertyBlock = (csvsData, loadingExampleRef) => {
-  Blockly.Blocks["property"] = {
-    init: function () {
-      this.appendDummyInput().appendField("data_frame =");
-      this.appendValueInput("blockInput").setCheck(null);
-      this.appendDummyInput().appendField(
-        new Blockly.FieldDropdown([["Columna", "Columna"]]),
-        "dropdown"
-      );
-      this.setInputsInline(true);
-      this.setOutput(true, null);
-      this.setColour("#7D5A4B");
-      this.setHelpUrl("");
-    },
-  };
-
   /*
   Mapa que linkea el id del Example con la columna a mostrar 
    key: exampleId
@@ -27,17 +12,30 @@ export const initPropertyBlock = (csvsData, loadingExampleRef) => {
     1: "Superficie (km²)",
   };
 
-  pythonGenerator["property"] = function (block) {
-    const blockInput = this.getInputTargetBlock("blockInput");
+  function getNewOptions(csvId) {
+    // TODO: cambiar la función para evitar cambiarla constantemente?
+    // creería que con sólo usar esta función, modificada para que la 
+    // acepte el dropdown, ya alcanza. Los dropdown se evaluan cuando 
+    // se despliega el menú.
+    // Aunque, para obtener esta lista se podría hacer un bucle de dependencias
+    // al momento de cargar el bloque. (?)
+    const blockInputCsvColumnsNames = csvsData
+      .find((csvData) => csvData.id.toString() === csvId)
+      .columnsNames?.map((columnName) => [columnName, columnName]);
+    
+    return blockInputCsvColumnsNames;
+  };
+
+  function updateDropdown(block) {
+    // TODO: cambiar la función para evitar cambiarla constantemente?
+    const blockInput = block.getInputTargetBlock("blockInput");
 
     const csvId = findCsvId(blockInput);
 
     if (csvId) {
-      const blockInputCsvColumnsNames = csvsData
-        .find((csvData) => csvData.id.toString() === csvId)
-        .columnsNames?.map((columnName) => [columnName, columnName]);
+      const blockInputCsvColumnsNames = getNewOptions(csvId);
 
-      const currentOptions = this.getField("dropdown").getOptions();
+      const currentOptions = block.getField("dropdown").getOptions();
 
       // Si cambiaron las opciones del dropdown, lo actualizo
       const optionsChanged =
@@ -50,16 +48,80 @@ export const initPropertyBlock = (csvsData, loadingExampleRef) => {
           dropdownField.setValue(examplesMap[loadingExampleRef.current]); //columna del example
         } else {
           dropdownField.setValue(blockInputCsvColumnsNames[0][1]); //default: 1er columna humanReadable
-        }
-      }
+        };
+      };
       loadingExampleRef.current = undefined;
     } else {
       //Default si no ingresa bloque, o si el bloque no es de tipo dataframe
       const dropdownField = block.getField("dropdown");
       dropdownField.menuGenerator_ = [["Columna", "Columna"]];
       dropdownField.setValue("Columna");
-    }
+    };
+  };
 
+  Blockly.Blocks["property"] = {
+    init: function () {
+      this.hidden_select = '';
+      this.appendDummyInput().appendField("data_frame =");
+      this.appendValueInput("blockInput").setCheck(null);
+      this.appendDummyInput().appendField(
+        new Blockly.FieldDropdown(this.generateOptions(this)),
+        "dropdown"
+      );
+      this.setInputsInline(true);
+      this.setOutput(true, null);
+      this.setColour("#7D5A4B");
+      this.setHelpUrl("");
+    },
+
+    generateOptions: function (block) {
+      // TODO: cambiar la función para evitar cambiarla constantemente(?)
+      const blockInput = block.getInputTargetBlock("blockInput");
+      const csvId = findCsvId(blockInput);
+      if (csvId) {
+        const blockInputCsvColumnsNames = getNewOptions(csvId);
+        if (blockInputCsvColumnsNames) {
+          return blockInputCsvColumnsNames;
+        } else {
+          return [["Columna", "Columna"]];
+        }
+      }else{
+        return [["Columna", "Columna"]];
+      }
+    },
+
+    onchange: function (e) {
+      // Actualizar opciones ignorando todos los eventos que no sean relevantes.
+      if (
+        e.type === Blockly.Events.BLOCK_MOVE ||
+        e.type === Blockly.Events.BLOCK_CHANGE
+      ) {
+        updateDropdown(this);
+      };
+
+      // Actualizar opciones y restaurar el valor seleccionado.
+      if (e.type == Blockly.Events.FINISHED_LOADING) {
+        updateDropdown(this);
+        try {this.getField('dropdown').setValue(this.hidden_select);}
+        catch (e) {};
+      }
+    },
+
+    saveExtraState: function () {
+      // guardar el valor seleccionado.
+      return {
+        selectedOption: this.getField('dropdown').getValue()
+      }
+    },
+
+    loadExtraState: function (state) {
+      // cargar el valor seleccionado en una variable auxiliar.
+      // evita problemas con el orden de cargado.
+      this.hidden_select = state.selectedOption;
+    }
+  };
+
+  pythonGenerator["property"] = function (block) {
     var blockInputCode = pythonGenerator.valueToCode(
       block,
       "blockInput",
@@ -75,12 +137,12 @@ export const initPropertyBlock = (csvsData, loadingExampleRef) => {
   function findCsvId(blockInput) {
     if (!blockInput) {
       return null;
-    }
+    };
 
     // Verificar si el bloque de entrada es un 'read_csv'
     if (blockInput.type === "read_csv") {
       return blockInput.getFieldValue("csvOptions");
-    }
+    };
 
     // Función interna para buscar recursivamente el 'read_csv'
     function recursiveFindCsvId(block) {
@@ -99,11 +161,11 @@ export const initPropertyBlock = (csvsData, loadingExampleRef) => {
             const csvId =
               findReadCsvBlock(valueBlock)?.getFieldValue("csvOptions");
 
-            // Devovler el csvId encontrado, o hacer recursion
+            // Devolver el csvId encontrado, o hacer recursion
             return csvId ? csvId : recursiveFindCsvId(valueBlock);
-          }
-        }
-      }
+          };
+        };
+      };
 
       // Si no es una variable, buscar recursivamente en los bloques hijos
       const connectedBlocks = block.getChildren();
@@ -111,22 +173,22 @@ export const initPropertyBlock = (csvsData, loadingExampleRef) => {
         const csvId = recursiveFindCsvId(connectedBlocks[i]);
         if (csvId) {
           return csvId;
-        }
-      }
+        };
+      };
 
       return null; // Devolver null si no se encontraron opciones de 'csv'
-    }
+    };
 
     // Llamar a la función interna para buscar recursivamente
     return recursiveFindCsvId(blockInput);
-  }
+  };
 
   // Función recursiva para encontrar el bloque 'read_csv' dentro del parametro 'block'
   function findReadCsvBlock(block) {
     // Caso base: el bloque actual es 'read_csv'
     if (block.type === "read_csv") {
       return block; // Devolver el bloque 'read_csv' encontrado
-    }
+    };
 
     // Obtener todos los bloques conectados
     const connectedBlocks = block.getChildren();
@@ -136,11 +198,11 @@ export const initPropertyBlock = (csvsData, loadingExampleRef) => {
       const foundBlock = findReadCsvBlock(connectedBlocks[i]);
       if (foundBlock) {
         return foundBlock; // Devolver el bloque 'read_csv' encontrado
-      }
-    }
+      };
+    };
 
     return null; // Devolver null si no se encuentra ningún bloque 'read_csv'
-  }
+  };
 
   // Función para encontrar el bloque 'variables_set' que setea una variable específica
   function findSetterBlock(variableName) {
@@ -149,5 +211,5 @@ export const initPropertyBlock = (csvsData, loadingExampleRef) => {
       .find((block) => {
         return block.getField("variableSetterKey")?.getText() === variableName;
       });
-  }
+  };
 };
