@@ -7,7 +7,6 @@ import BlockInfoModal from "../blockInfoModal/BlockInfoModal";
 import BlocksService from "./services/BlocksService";
 import { toolbox } from "./constants/toolbox";
 import { blocksInfo } from "../blockInfoModal/blocksInfo";
-import defaultBlocks from "./constants/blocks/defaultBlocks.json";
 import ErrorAlert from "../alerts/errorAlert/ErrorAlert";
 import SuccessAlert from "../alerts/successAlert/SuccessAlert";
 import WarningAlert from "../alerts/warningAlert/WarningAlert";
@@ -27,6 +26,7 @@ const BlocksEditor = ({ updateCode, isLoading, setIsLoading }) => {
   const [errorAlertText, setErrorAlertText] = useState("");
   const [successAlertText, setSuccessAlertText] = useState("");
   const [warningAlertText, setWarningAlertText] = useState("");
+  const [shouldLoadDefaultWorkspace, setShouldLoadDefaultWorkspace] = useState(undefined);
 
   const handleMouseMove = (event) => {
     const mouseX = event.clientX;
@@ -85,12 +85,20 @@ const BlocksEditor = ({ updateCode, isLoading, setIsLoading }) => {
     });
 
     //TODO: Hace falta tener esto si tenemos los ejemplos?
-    // TODO: usar onWorkspaceLoad pero se tiene que esperar que termine de cargar
-    // el csv antes de poder usarlo. Si se deja asi y se modifica el archivo con
-    // los bloques por defecto quizá se rompa sin querer aunque no se debería modificar.
-    BlocksService.loadWorkspace(defaultBlocks);
+    // setear la primera vez para que cargue el workspace predeterminado
+    setShouldLoadDefaultWorkspace(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // efecto para cargar el workspace predeterminado una sóla vez.
+  // TODO: hacerlo de una mejor manera, en donde corresponda, esperando que cargue
+  // el csv default por completo y terminen de cargarse las variables de csv también.
+  useEffect(() => {
+    if (shouldLoadDefaultWorkspace) {
+      BlocksService.loadDefaultWorkspace(false);
+      setShouldLoadDefaultWorkspace(false);
+    }
+  }, [isLoading]);
 
   // TODO: refactorizar los mensajes para no repetir código.
   const handleCreateVariableClick = () => {

@@ -1,5 +1,6 @@
 import Blockly from "blockly";
 import { pythonGenerator } from "blockly/python";
+import BlocksService from "../../services/BlocksService";
 
 export const initReadCsvBlock = (useFrontRef) => {
   Blockly.Blocks["read_csv"] = {
@@ -15,7 +16,9 @@ export const initReadCsvBlock = (useFrontRef) => {
     },
 
     generateOptions: function () {
-      return [["Cargando...", "1"]];
+      // ya no se necesita actualizar la función todo el rato. dinámicamente
+      // se obtienen los resultados de BlocksService.
+      return BlocksService.mapCsvs();
     },
   };
 
@@ -24,10 +27,10 @@ export const initReadCsvBlock = (useFrontRef) => {
     var selectedValue = block.getField("csvOptions").getText();
 
     if (useFrontRef.current) {
-      const code = `pandas.read_csv(${selectedValue})`;
+      const code = `pandas.read_csv("${selectedValue}")`;
       return [code, pythonGenerator.ORDER_FUNCTION_CALL];
     } else {
-      const code = `read_csv(${selectedKey})`;
+      const code = `read_csv("${selectedKey}")`;
       return [code, pythonGenerator.ORDER_FUNCTION_CALL];
     }
   };

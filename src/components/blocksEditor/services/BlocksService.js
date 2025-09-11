@@ -67,20 +67,22 @@ const BlocksService = {
     initIndexBlock();
   },
 
+  mapCsvs() {
+    var ret = [["Cargando...", "1"]];
+
+    if (this.csvsData) {
+      ret = this.csvsData.map((csvData) => [
+        csvData.filename,
+        `${csvData.id}`,
+      ]);
+    }
+
+    return ret
+  },
+
   // Se dispara cuando el usuario guarda un Csv
   onCsvUpload(csvData) {
-    this.csvsData.push(csvData);
-
-    const readCsvBlockDropdownOptions = this.csvsData.map((csvData) => [
-      csvData.filename,
-      `${csvData.id}`,
-    ]);
-
-    Blockly.Blocks["read_csv"].generateOptions = function () {
-      return readCsvBlockDropdownOptions;
-    };
-
-    this.refreshWorkspace();
+    if (csvData) {this.csvsData.push(csvData);}
   },
 
   onRefreshFlyout() {
@@ -114,6 +116,7 @@ const BlocksService = {
   loadWorkspace(workspace) {
     // Guardar el workspace para cargarlo de nuevo en caso de error.
     const backupWorkspace = this.getCurrentWorkspace();
+    var ret = '';
 
     try {
       // sobreescribir variables.
@@ -129,17 +132,15 @@ const BlocksService = {
         Blockly.getMainWorkspace()
       );
 
-      // Refrescar para evitar errores en los datos cargados
-      BlocksService.refreshWorkspace();
-
       // no falló nada.
-      return '';
     } catch(e) {
       // falló cargar el archivo leído.
       // TODO: ver si esta recursión genera problemas. creería que no(?)
       this.loadWorkspace(backupWorkspace);
-      return 'Hay un error en el archivo por lo que no puede ser cargado.';
+      ret = 'Hay un error en el archivo por lo que no puede ser cargado.';
     };
+
+    return ret;
   },
 
   updateVariablesDrowdown() {
@@ -182,6 +183,12 @@ const BlocksService = {
       csvsData: getCsvFilesInUse(),
       blocks: Blockly.serialization.workspaces.save(Blockly.getMainWorkspace())
     };
+  },
+
+  loadDefaultWorkspace(force) {
+    // función de carga del workspace predeterminado.
+    // force: boolean; true: saltea el check de variables/csv, false: no saltea.
+    return force ? this.loadWorkspace(defaultBlocks) : this.onWorkspaceLoad(defaultBlocks);
   },
 
   onWorkspaceLoad(workspace) {
@@ -229,23 +236,12 @@ const BlocksService = {
         flyout.show(toolbox);
       };
       
-      // TODO: creo que actualizar así causa que los bloques pierdan sus 
-      // valores si usan selectbox que dependan de otro bloque, como los
-      // de selección de columnas.
-      this.refreshWorkspace();
       return "";
     } else if (variableName?.trim() === "") {
       return "El nombre de la variable no puede estar vacío.";
     } else if (this.variables?.includes(variableName)) {
       return "La variable ya existe.";
     }
-  },
-
-  refreshWorkspace() {
-    const workspace = Blockly.getMainWorkspace();
-    const blocksXML = Blockly.Xml.workspaceToDom(workspace);
-    workspace.clear();
-    Blockly.Xml.domToWorkspace(blocksXML, workspace);
   },
 };
 
