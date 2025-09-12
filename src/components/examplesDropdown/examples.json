@@ -4,7 +4,7 @@
     "path": "examples/superficie mayor 100km2.pdlz"
   },
   "001": {
-    "title": "Cómo guardar datos en variables y leerlos",
+    "title": "Crear y leer variables",
     "path": "examples/variable hola mundo.pdlz"
   },
   "002": {

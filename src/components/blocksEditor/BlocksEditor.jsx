@@ -103,22 +103,22 @@ const BlocksEditor = ({ updateCode, isLoading, setIsLoading }) => {
   // TODO: refactorizar los mensajes para no repetir código.
   const handleCreateVariableClick = () => {
     const result = BlocksService.onCreateVariableClick();
-    if (result && result !== "") {
+
+    if (result) {
+      // cualquier mensaje de error no vacío
       setErrorAlertText(result);
-      setTimeout(() => {
-        setErrorAlertText("");
-      }, 3000);
-    } else if (result !== undefined) {
+      setTimeout(() => setErrorAlertText(""), 3000);
+    } else {
+      // resultado vacío → éxito
       setSuccessAlertText(
         "La variable se creó correctamente. Selecciónela desde el 'set/get'."
       );
-      setTimeout(() => {
-        setSuccessAlertText("");
-      }, 3000);
+      setTimeout(() => setSuccessAlertText(""), 3000);
       setErrorAlertText("");
       setWarningAlertText("");
     }
   };
+
 
   const onBlocksChange = (event) => {
     const workspace = Blockly.getMainWorkspace();

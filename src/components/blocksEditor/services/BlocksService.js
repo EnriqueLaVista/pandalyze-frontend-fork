@@ -224,6 +224,7 @@ const BlocksService = {
       variableName !== null &&
       variableName?.trim() !== "" &&
       !this.variables?.includes(variableName)
+      && !variableName.includes(" ")
     ) {
       this.variables.push(variableName);
 
@@ -239,6 +240,8 @@ const BlocksService = {
       return "";
     } else if (variableName?.trim() === "") {
       return "El nombre de la variable no puede estar vacío.";
+    } else if (variableName?.includes(" ")) {
+      return "El nombre de la variable no puede contener espacios.";
     } else if (this.variables?.includes(variableName)) {
       return "La variable ya existe.";
     }
