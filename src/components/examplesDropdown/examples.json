@@ -6,5 +6,13 @@
   "001": {
     "title": "Cómo guardar datos en variables y leerlos",
     "path": "examples/variable hola mundo.pdlz"
+  },
+  "002": {
+    "title": "Gráfico de dispersión",
+    "path": "examples/grafico de dispersion.pdlz"
+  },
+  "003": {
+    "title": "Gráfico de barras",
+    "path": "examples/grafico de barras.pdlz"
   }
 }
