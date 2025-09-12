@@ -14,5 +14,9 @@
   "003": {
     "title": "Gráfico de barras",
     "path": "examples/grafico de barras.pdlz"
+  },
+  "004": {
+    "title": "ver apariciones únicas de una columna",
+    "path": "examples/ver unicos.pdlz"
   }
 }
