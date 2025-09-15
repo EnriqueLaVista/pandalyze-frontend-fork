@@ -1,15 +1,17 @@
 .consoles-container {
   display: flex;
+  flex-direction: column; 
+  gap: 15px;              
 }
 
 .console {
   background-color: #fff;
   border: 1px solid #ced4da;
   padding: 10px;
-  height: 350px;
+  min-height: 150px; 
+  max-height: 350px;
   overflow-y: auto;
   overflow-x: auto;
-  flex: 1; /* Las consolas ocuparán el espacio disponible */
 }
 
 .code-output {
@@ -22,4 +24,19 @@
 
 .console-warning {
   background-color: #ffffcc;
+}
+
+.map-container {
+    width: 100%; 
+    height: 500px; 
+    border: 1px solid #ccc;
+    border-radius: 4px; 
+    overflow: hidden;
+    box-sizing: border-box; 
+}
+
+.map-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
 }
