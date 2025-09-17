@@ -218,14 +218,55 @@ const BlocksService = {
     };
   },
 
+  isValidVariable(name) {
+    if (typeof name !== "string") {
+      return "El nombre de la variable debe ser un string."
+    };
+  
+    // el patrón también lo verifica
+    if (name?.trim() === "") {
+      return "El nombre de la variable no puede estar vacío.";
+    };
+  
+    // el patrón también lo verifica
+    if (name?.includes(" ")) {
+      return "El nombre de la variable no puede contener espacios.";
+    };
+  
+    if (this.variables?.includes(name)) {
+      return "La variable ya existe.";
+    };
+  
+    // patrón para verificar primer caracter letra minus. o mayus. o guión bajo
+    // y el resto sólo letras minus. o mayus., número o guión bajo. además no
+    // puede haber guiones dobles.
+    const pattern = /^(?!.*__)[A-Za-z_][A-Za-z0-9_]*$/;
+  
+    if (!pattern.test(name)) {
+      return "El nombre de la variable sólo puede contener letras minúsculas, mayúsculas y números"
+    };
+  
+    const pythonKeywords = new Set([
+      "False","None","True","and","as","assert","async","await",
+      "break","class","continue","def","del","elif","else","except",
+      "finally","for","from","global","if","import","in","is",
+      "lambda","nonlocal","not","or","pass","raise","return",
+      "try","while","with","yield"
+    ]);
+  
+    if (pythonKeywords.has(name)) {
+      return "El nombre de la variable no puede ser una de las palabras reservadas de Python. Te invitamos a investigarlas!"
+    };
+  
+    return "";
+  },
+
   onCreateVariableClick(button) {
     const variableName = prompt("Nombra tu variable:");
-    if (
-      variableName !== null &&
-      variableName?.trim() !== "" &&
-      !this.variables?.includes(variableName)
-      && !variableName.includes(" ")
-    ) {
+
+    const ret = this.isValidVariable(variableName);
+
+    if (!ret) {
       this.variables.push(variableName);
 
       this.updateVariablesDrowdown();
@@ -236,15 +277,9 @@ const BlocksService = {
         flyout.hide();
         flyout.show(toolbox);
       };
-      
-      return "";
-    } else if (variableName?.trim() === "") {
-      return "El nombre de la variable no puede estar vacío.";
-    } else if (variableName?.includes(" ")) {
-      return "El nombre de la variable no puede contener espacios.";
-    } else if (this.variables?.includes(variableName)) {
-      return "La variable ya existe.";
     }
+
+    return ret;
   },
 };
 
