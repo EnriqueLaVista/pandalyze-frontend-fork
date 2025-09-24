@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import 'blockly/python';
+import 'blockly/javascript';
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";

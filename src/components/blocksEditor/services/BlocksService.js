@@ -25,6 +25,7 @@ import { initGroupByBlock } from "../constants/blocks/pandasFilter/groupbyBlock"
 import { initSumBlock } from "../constants/blocks/pandasFilter/sumBlock";
 import { initValueCountsBlock } from "../constants/blocks/pandasFilter/valueCountsBlocks";
 import { initLineBlock } from "../constants/blocks/plotly/lineBlock";
+import { initMapViewerBlock } from "../constants/blocks/maps/mapBlock";
 import { initScatterBlock } from "../constants/blocks/plotly/scatterBlock";
 import { initBarBlock } from "../constants/blocks/plotly/barBlock";
 import { initPieBlock } from "../constants/blocks/plotly/pieBlock";
@@ -47,6 +48,7 @@ const BlocksService = {
     initVariablesBlocks();
     initPropertyBlock(this.csvsData, loadingExampleRef);
     initLineBlock();
+    initMapViewerBlock();
     initBarBlock();
     initScatterBlock();
     initPieBlock();

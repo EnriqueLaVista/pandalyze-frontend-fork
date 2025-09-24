@@ -11,7 +11,6 @@ const PythonEditor = ({
 }) => {
   const API_URL = process.env.REACT_APP_API_URL;
 
-  //Pegada al back para correr el codigo
   const handleSubmit = () => {
     const pythonCode = backendCode;
     fetch(`${API_URL}/runPythonCode`, {
@@ -22,7 +21,6 @@ const PythonEditor = ({
       body: JSON.stringify({ code: pythonCode }),
     })
       .then((response) => {
-        // Si el backend rompe lanza el error al catch. Sino, lo jsonifica
         if (!response.ok) {
           return response.text().then((errorMessage) => {
             throw new Error(errorMessage);
@@ -42,40 +40,24 @@ const PythonEditor = ({
             }
           });
         }
-
-        if (!plots.length && !jsonData.output) {
-          setBackendResponse({
-            codeExecutionError: false,
-            codeEmptyWarning: true,
-            output:
-              "La ejecución del código resultó en una respuesta vacía.\nPara visualizar texto o imágenes, utiliza los bloques de la categoría 'Salida'.",
-            plots: plots,
-          });
-        } else {
-          setBackendResponse({
-            codeExecutionError: false,
-            output: jsonData.output,
-            plots: plots,
-          });
-        }
+        setBackendResponse({
+          output: jsonData.output,
+          plots: plots,
+          type: jsonData.type, 
+        });
       })
       .catch((error) => {
         let errorMessage;
-
         try {
-          // Intenta parsear el mensaje de error como JSON
           errorMessage = JSON.parse(error.message);
         } catch (e) {
-          // Si no es un JSON válido, crea un objeto de error personalizado
           errorMessage = {
             personalized_error:
               "Debe esperar a que la aplicación esté lista para usar",
             original_error: error.message,
           };
         }
-
         console.warn("Error en el codigo:", errorMessage);
-
         setBackendResponse({
           codeExecutionError: true,
           personalizedError: errorMessage.personalized_error,
