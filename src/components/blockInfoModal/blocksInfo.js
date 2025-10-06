@@ -169,4 +169,14 @@ export const blocksInfo = [
     blockTitle: "'Index'",
     blockInfo: "Obtiene las etiquetas asociadas a los datos de una columna.",
   },
+  {
+    blockType: "map_viewer",
+    blockTitle: "'Generador de Mapas'",
+    blockInfo: "Genera un mapa a partir de un DataFrame con marcadores basados en las columnas proporcionadas.",
+  },
+    {
+    blockType: "get_column_name",
+    blockTitle: "'Obtener Nombre de Columna'",
+    blockInfo: "Obtiene el nombre de una columna como texto.",
+  },
 ];
