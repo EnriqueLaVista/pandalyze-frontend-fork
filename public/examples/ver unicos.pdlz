@@ -1,0 +1,90 @@
+{
+  "_signature": "PDLZ_v1::1757700586272",
+  "data": {
+    "variables": [
+      "lagosPorProvincia"
+    ],
+    "csvsData": [
+      {
+        "id": 1,
+        "filename": "Lagos.csv",
+        "columnsNames": [
+          "Nombre",
+          "Ubicación",
+          "Superficie (km²)",
+          "Profundidad máxima (m)",
+          "Profundidad media (m)",
+          "Coordenadas",
+          "Sup Tamaño",
+          "Latitud en GMS",
+          "Longitud en GMS",
+          "lat",
+          "lng"
+        ]
+      }
+    ],
+    "blocks": {
+      "blocks": {
+        "languageVersion": 0,
+        "blocks": [
+          {
+            "type": "print_with_argument",
+            "id": "c3SlVFn@-;6)Jl$.4_3W",
+            "x": -303,
+            "y": 97,
+            "inputs": {
+              "ARGUMENT": {
+                "block": {
+                  "type": "primitive_text",
+                  "id": "{RR}z.%k*k_6{vz]K#ec",
+                  "fields": {
+                    "TEXT": "Provincias con lagos:"
+                  }
+                }
+              }
+            },
+            "next": {
+              "block": {
+                "type": "print_with_argument",
+                "id": "ufG|~}%7LQtC591c`@lf",
+                "inputs": {
+                  "ARGUMENT": {
+                    "block": {
+                      "type": "unique",
+                      "id": "Xi(2c@y2n0o/(?5G25L~",
+                      "inputs": {
+                        "VALUE": {
+                          "block": {
+                            "type": "property",
+                            "id": "+M~$ZWrFX9{R,jzEj^Ro",
+                            "extraState": {
+                              "selectedOption": "Ubicación"
+                            },
+                            "fields": {
+                              "dropdown": "Ubicación"
+                            },
+                            "inputs": {
+                              "blockInput": {
+                                "block": {
+                                  "type": "read_csv",
+                                  "id": "%mZ|{yLz~V`#V8mBm5,O",
+                                  "fields": {
+                                    "csvOptions": "1"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

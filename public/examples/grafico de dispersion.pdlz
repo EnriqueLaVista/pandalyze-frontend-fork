@@ -1,0 +1,134 @@
+{
+  "_signature": "PDLZ_v1::1757624247752",
+  "data": {
+    "variables": [
+      "lagos"
+    ],
+    "csvsData": [
+      {
+        "id": 1,
+        "filename": "Lagos.csv",
+        "columnsNames": [
+          "Nombre",
+          "Ubicación",
+          "Superficie (km²)",
+          "Profundidad máxima (m)",
+          "Profundidad media (m)",
+          "Coordenadas",
+          "Sup Tamaño",
+          "Latitud en GMS",
+          "Longitud en GMS",
+          "lat",
+          "lng"
+        ]
+      }
+    ],
+    "blocks": {
+      "blocks": {
+        "languageVersion": 0,
+        "blocks": [
+          {
+            "type": "variables_set",
+            "id": "+s]jReSG^j,03F%OWrp(",
+            "x": 38,
+            "y": 111,
+            "fields": {
+              "variableSetterKey": "0"
+            },
+            "inputs": {
+              "VALUE": {
+                "block": {
+                  "type": "read_csv",
+                  "id": "%mZ|{yLz~V`#V8mBm5,O",
+                  "fields": {
+                    "csvOptions": "1"
+                  }
+                }
+              }
+            },
+            "next": {
+              "block": {
+                "type": "showInConsole",
+                "id": "Cw`lq+,an%eSFcGk.pT*",
+                "inputs": {
+                  "VALUE": {
+                    "block": {
+                      "type": "scatter",
+                      "id": "0?_hX9RUK*|#YgNM;tij",
+                      "inputs": {
+                        "dataFrameValue": {
+                          "block": {
+                            "type": "variables_get",
+                            "id": "vfT^/_6(Zm_NcG%qzhmo",
+                            "fields": {
+                              "variableGetterKey": "0"
+                            }
+                          }
+                        },
+                        "xValue": {
+                          "block": {
+                            "type": "property",
+                            "id": "YY,9V[o]M?(5%c`o?TZ/",
+                            "extraState": {
+                              "selectedOption": "Profundidad máxima (m)"
+                            },
+                            "fields": {
+                              "dropdown": "Profundidad máxima (m)"
+                            },
+                            "inputs": {
+                              "blockInput": {
+                                "block": {
+                                  "type": "variables_get",
+                                  "id": "igbz?9$P_ew(AW]vu-Kv",
+                                  "fields": {
+                                    "variableGetterKey": "0"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "yValue": {
+                          "block": {
+                            "type": "property",
+                            "id": "q?n1Vs)N=T:Ixf#[I(`0",
+                            "extraState": {
+                              "selectedOption": "Profundidad media (m)"
+                            },
+                            "fields": {
+                              "dropdown": "Profundidad media (m)"
+                            },
+                            "inputs": {
+                              "blockInput": {
+                                "block": {
+                                  "type": "variables_get",
+                                  "id": ".Jfy}gVx7=qS,N$foWIF",
+                                  "fields": {
+                                    "variableGetterKey": "0"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "title": {
+                          "block": {
+                            "type": "primitive_text",
+                            "id": "EH|h}bdDmaX50gFMoq(o",
+                            "fields": {
+                              "TEXT": "Comparativa entre profundidades medias y máximas"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -59,6 +59,10 @@ export const toolbox = {
               kind: "block",
               type: "index",
             },
+            {
+              kind: "block",
+              type: "get_column_name", 
+            },
           ],
         },
         {
@@ -196,6 +200,21 @@ export const toolbox = {
       gap: "8",
     },
     {
+      kind: "category",
+      name: "Mapas",      
+      colour: "#5B80A5",  
+      contents: [
+        {
+          kind: "block",
+          type: "map_viewer", 
+        },
+      ],
+    },
+    {
+      kind: "sep",
+      gap: "8",
+    },
+ {
       kind: "category",
       name: "Salida",
       colour: "150",

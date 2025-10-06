@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Blockly from "blockly";
 import "./styles.css";
+import { javascriptGenerator } from "blockly/javascript";
 import { pythonGenerator } from "blockly/python";
 import CsvUploader from "../csvUploader/CsvUploader";
 import BlockInfoModal from "../blockInfoModal/BlockInfoModal";
@@ -12,6 +13,7 @@ import SuccessAlert from "../alerts/successAlert/SuccessAlert";
 import WarningAlert from "../alerts/warningAlert/WarningAlert";
 import ExamplesDropdown from "../examplesDropdown/ExamplesDropdown";
 import WorkspaceJsonUploader from "../workspaceJsonUploader/WorkspaceJsonUploader";
+import { initMapViewerBlock } from './constants/blocks/maps/mapBlock';
 
 const BlocksEditor = ({ updateCode, isLoading, setIsLoading }) => {
   const useFrontRef = useRef(true);
@@ -33,8 +35,11 @@ const BlocksEditor = ({ updateCode, isLoading, setIsLoading }) => {
     const mouseY = event.clientY;
     mouseTrackerRef.current = { x: mouseX, y: mouseY };
   };
-
+  
   useEffect(() => {
+    javascriptGenerator['show_map'] = initMapViewerBlock.javascript;
+    pythonGenerator['show_map'] = initMapViewerBlock.python;
+
     const workspace = Blockly.inject("blocklyDiv", {
       toolbox: toolbox,
       zoom: {
@@ -103,22 +108,22 @@ const BlocksEditor = ({ updateCode, isLoading, setIsLoading }) => {
   // TODO: refactorizar los mensajes para no repetir código.
   const handleCreateVariableClick = () => {
     const result = BlocksService.onCreateVariableClick();
-    if (result && result !== "") {
+
+    if (result) {
+      // cualquier mensaje de error no vacío
       setErrorAlertText(result);
-      setTimeout(() => {
-        setErrorAlertText("");
-      }, 3000);
-    } else if (result !== undefined) {
+      setTimeout(() => setErrorAlertText(""), 3000);
+    } else {
+      // resultado vacío → éxito
       setSuccessAlertText(
         "La variable se creó correctamente. Selecciónela desde el 'set/get'."
       );
-      setTimeout(() => {
-        setSuccessAlertText("");
-      }, 3000);
+      setTimeout(() => setSuccessAlertText(""), 3000);
       setErrorAlertText("");
       setWarningAlertText("");
     }
   };
+
 
   const onBlocksChange = (event) => {
     const workspace = Blockly.getMainWorkspace();

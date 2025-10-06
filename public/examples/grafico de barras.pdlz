@@ -1,0 +1,144 @@
+{
+  "_signature": "PDLZ_v1::1757625724507",
+  "data": {
+    "variables": [
+      "lagosPorProvincia"
+    ],
+    "csvsData": [
+      {
+        "id": 1,
+        "filename": "Lagos.csv",
+        "columnsNames": [
+          "Nombre",
+          "Ubicación",
+          "Superficie (km²)",
+          "Profundidad máxima (m)",
+          "Profundidad media (m)",
+          "Coordenadas",
+          "Sup Tamaño",
+          "Latitud en GMS",
+          "Longitud en GMS",
+          "lat",
+          "lng"
+        ]
+      }
+    ],
+    "blocks": {
+      "blocks": {
+        "languageVersion": 0,
+        "blocks": [
+          {
+            "type": "variables_set",
+            "id": "-njhV?dn=%hv$v9?oz#Q",
+            "x": -250,
+            "y": 60,
+            "fields": {
+              "variableSetterKey": "1"
+            },
+            "inputs": {
+              "VALUE": {
+                "block": {
+                  "type": "valueCounts",
+                  "id": "kafsI[YCj)n*z$#{$^`;",
+                  "inputs": {
+                    "VALUE": {
+                      "block": {
+                        "type": "property",
+                        "id": "+M~$ZWrFX9{R,jzEj^Ro",
+                        "extraState": {
+                          "selectedOption": "Ubicación"
+                        },
+                        "fields": {
+                          "dropdown": "Ubicación"
+                        },
+                        "inputs": {
+                          "blockInput": {
+                            "block": {
+                              "type": "read_csv",
+                              "id": "%mZ|{yLz~V`#V8mBm5,O",
+                              "fields": {
+                                "csvOptions": "1"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "next": {
+              "block": {
+                "type": "showInConsole",
+                "id": "tGzjhRT-IEovFX+@B}z9",
+                "inputs": {
+                  "VALUE": {
+                    "block": {
+                      "type": "bar",
+                      "id": "yY,mi]^taA|HN~ks6Z(Z",
+                      "inputs": {
+                        "dataFrameValue": {
+                          "block": {
+                            "type": "variables_get",
+                            "id": "+VSw0+znR!8hB]~:YE{}",
+                            "fields": {
+                              "variableGetterKey": "1"
+                            }
+                          }
+                        },
+                        "xValue": {
+                          "block": {
+                            "type": "index",
+                            "id": "A;ycZ5P)|T:MJU%.h.6B",
+                            "inputs": {
+                              "argument": {
+                                "block": {
+                                  "type": "variables_get",
+                                  "id": "cQR1A~@MJa|@X5iU)`o{",
+                                  "fields": {
+                                    "variableGetterKey": "1"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "yValue": {
+                          "block": {
+                            "type": "values",
+                            "id": "%;rPe6LojADb%d74~Yjd",
+                            "inputs": {
+                              "argument": {
+                                "block": {
+                                  "type": "variables_get",
+                                  "id": "/yjR+4_t:1^z7cRHJ#tb",
+                                  "fields": {
+                                    "variableGetterKey": "1"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "title": {
+                          "block": {
+                            "type": "primitive_text",
+                            "id": "*{@7rB:buPb~S;Whnvmn",
+                            "fields": {
+                              "TEXT": "Lagos por provincia"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
