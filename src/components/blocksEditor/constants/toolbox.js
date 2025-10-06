@@ -59,6 +59,10 @@ export const toolbox = {
               kind: "block",
               type: "index",
             },
+            {
+              kind: "block",
+              type: "get_column_name", 
+            },
           ],
         },
         {

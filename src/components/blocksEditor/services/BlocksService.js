@@ -30,6 +30,7 @@ import { initScatterBlock } from "../constants/blocks/plotly/scatterBlock";
 import { initBarBlock } from "../constants/blocks/plotly/barBlock";
 import { initPieBlock } from "../constants/blocks/plotly/pieBlock";
 import { initShowInConsoleBlock } from "../constants/blocks/plotly/showInConsoleBlock";
+import { initColumnNameBlock } from '../constants/blocks/columnNameBlock';
 import defaultBlocks from "../constants/blocks/defaultBlocks.json";
 
 const BlocksService = {
@@ -67,6 +68,7 @@ const BlocksService = {
     initValueCountsBlock();
     initValuesBlock();
     initIndexBlock();
+    initColumnNameBlock();
   },
 
   // Se dispara cuando el usuario guarda un Csv
