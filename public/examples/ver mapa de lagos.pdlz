@@ -1,0 +1,144 @@
+{
+  "_signature": "PDLZ_v1::1760469991012",
+  "data": {
+    "variables": [
+      "df"
+    ],
+    "csvsData": [
+      {
+        "id": 1,
+        "filename": "Lagos.csv",
+        "columnsNames": [
+          "Nombre",
+          "Ubicación",
+          "Superficie (km²)",
+          "Profundidad máxima (m)",
+          "Profundidad media (m)",
+          "Coordenadas",
+          "Sup Tamaño",
+          "Latitud en GMS",
+          "Longitud en GMS",
+          "lat",
+          "lng"
+        ]
+      }
+    ],
+    "blocks": {
+      "blocks": {
+        "languageVersion": 0,
+        "blocks": [
+          {
+            "type": "map_viewer",
+            "id": "EFoKIWE/2A$zDXWJ)P8L",
+            "x": 215,
+            "y": 104,
+            "inputs": {
+              "DATAFRAME": {
+                "block": {
+                  "type": "read_csv",
+                  "id": "!NCc9^o,HZFrm-h96;K:",
+                  "fields": {
+                    "csvOptions": "1"
+                  }
+                }
+              },
+              "LAT": {
+                "block": {
+                  "type": "get_column_name",
+                  "id": "+e4~(Ba2c,Az{)Bud]DR",
+                  "inputs": {
+                    "COLUMN_SERIES": {
+                      "block": {
+                        "type": "property",
+                        "id": "I[10lpNp}/0N1KU$z|m7",
+                        "extraState": {
+                          "selectedOption": "lat"
+                        },
+                        "fields": {
+                          "dropdown": "lat"
+                        },
+                        "inputs": {
+                          "blockInput": {
+                            "block": {
+                              "type": "read_csv",
+                              "id": "R9Eh,/?@j~p3KD]5=2oS",
+                              "fields": {
+                                "csvOptions": "1"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "LONG": {
+                "block": {
+                  "type": "get_column_name",
+                  "id": "+5`d-6#n?r[-jv%O5.O8",
+                  "inputs": {
+                    "COLUMN_SERIES": {
+                      "block": {
+                        "type": "property",
+                        "id": "r13{ENVrv.ddDj9NQ6@!",
+                        "extraState": {
+                          "selectedOption": "lng"
+                        },
+                        "fields": {
+                          "dropdown": "lng"
+                        },
+                        "inputs": {
+                          "blockInput": {
+                            "block": {
+                              "type": "read_csv",
+                              "id": "9Amqk*#/LE78ekXjo;U`",
+                              "fields": {
+                                "csvOptions": "1"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "CATEGORY": {
+                "block": {
+                  "type": "get_column_name",
+                  "id": "Qc/E1#zCACdKE4nFd@Q4",
+                  "inputs": {
+                    "COLUMN_SERIES": {
+                      "block": {
+                        "type": "property",
+                        "id": "13FN}$yZ|%=}=Qy-Kq^1",
+                        "extraState": {
+                          "selectedOption": "Nombre"
+                        },
+                        "fields": {
+                          "dropdown": "Nombre"
+                        },
+                        "inputs": {
+                          "blockInput": {
+                            "block": {
+                              "type": "read_csv",
+                              "id": "1`z3%4tspXMt(J})g}XC",
+                              "fields": {
+                                "csvOptions": "1"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
