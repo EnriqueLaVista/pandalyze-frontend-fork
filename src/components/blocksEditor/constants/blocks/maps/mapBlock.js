@@ -1,5 +1,7 @@
 import Blockly from "blockly";
 import { pythonGenerator } from "blockly/python";
+import { findCsvId } from "../propertyBlock";
+
 
 export const initMapViewerBlock = () => {
   Blockly.Blocks["map_viewer"] = {
@@ -16,20 +18,27 @@ export const initMapViewerBlock = () => {
     },
   };
 
-  pythonGenerator["map_viewer"] = function (block) {
-    const dataframe =
-      pythonGenerator.valueToCode(block, "DATAFRAME", pythonGenerator.ORDER_ATOMIC) || "None";
-    const lat =
-      pythonGenerator.valueToCode(block, "LAT", pythonGenerator.ORDER_ATOMIC)?.replace(/['"]/g, "") ||
-      "None";
-    const long =
-      pythonGenerator.valueToCode(block, "LONG", pythonGenerator.ORDER_ATOMIC)?.replace(/['"]/g, "") ||
-      "None";
-    const category =
-      pythonGenerator.valueToCode(block, "CATEGORY", pythonGenerator.ORDER_ATOMIC)?.replace(/['"]/g, "") ||
-      "None";
+pythonGenerator["map_viewer"] = function (block) {
+  let dataframeCode =
+    pythonGenerator.valueToCode(block, "DATAFRAME", pythonGenerator.ORDER_ATOMIC) || "None";
 
-    const code = `generate_map(dataframe=${dataframe}, lat_col='${lat}', long_col='${long}', category_col='${category}')\n`;
-    return code;
-  };
+  const csvId = findCsvId(block.getInputTargetBlock("DATAFRAME"));
+  if (csvId) {
+    dataframeCode = `pd.read_csv("${csvId}")`;
+  }
+
+  const lat =
+    pythonGenerator.valueToCode(block, "LAT", pythonGenerator.ORDER_ATOMIC)?.replace(/['"]/g, "") ||
+    "None";
+  const long =
+    pythonGenerator.valueToCode(block, "LONG", pythonGenerator.ORDER_ATOMIC)?.replace(/['"]/g, "") ||
+    "None";
+  const category =
+    pythonGenerator.valueToCode(block, "CATEGORY", pythonGenerator.ORDER_ATOMIC)?.replace(/['"]/g, "") ||
+    "None";
+
+  const code = `generate_map(dataframe=${dataframeCode}, lat_col='${lat}', long_col='${long}', category_col='${category}')\n`;
+  return code;
+};
+
 };
