@@ -1,7 +1,7 @@
 import Blockly from "blockly";
 import { pythonGenerator } from "blockly/python";
 import { findCsvId } from "../propertyBlock";
-
+import BlocksService from '../../../services/BlocksService';
 
 export const initMapViewerBlock = () => {
   Blockly.Blocks["map_viewer"] = {
@@ -18,13 +18,20 @@ export const initMapViewerBlock = () => {
     },
   };
 
+
 pythonGenerator["map_viewer"] = function (block) {
   let dataframeCode =
     pythonGenerator.valueToCode(block, "DATAFRAME", pythonGenerator.ORDER_ATOMIC) || "None";
 
+  // Detectar CSV asociado
   const csvId = findCsvId(block.getInputTargetBlock("DATAFRAME"));
   if (csvId) {
-    dataframeCode = `pd.read_csv("${csvId}")`;
+    // Buscar el nombre real del archivo a partir del id
+    const csvInfo = BlocksService.csvsData.find(
+      (csv) => csv.id.toString() === csvId.toString()
+    );
+    const csvName = csvInfo ? csvInfo.name : csvId; // fallback por si no se encuentra
+    dataframeCode = `pd.read_csv("${csvName}")`;
   }
 
   const lat =
