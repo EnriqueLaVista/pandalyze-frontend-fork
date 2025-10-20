@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import "./OutputConsoleStyles.css";
 
 const OutputConsole = ({ backendResponse }) => {
+  const [expandedConsole, setExpandedConsole] = useState(null);
+
   useEffect(() => {
-    if (backendResponse.output || backendResponse.plots || backendResponse.type === 'map') {
+    if (backendResponse.output || backendResponse.plots || backendResponse.type === "map") {
       const element = document.querySelector(".console, .map-container");
       element?.scrollIntoView({ behavior: "smooth" });
     } else {
@@ -12,20 +14,42 @@ const OutputConsole = ({ backendResponse }) => {
     }
   }, [backendResponse]);
 
-  if (Object.keys(backendResponse).length === 0) {
-    return (
-      <div className="consoles-container">
-        <div className="console">
-          <h5>Consola</h5>
-        </div>
-      </div>
-    );
-  }
+  const toggleExpand = (id) => {
+    setExpandedConsole(expandedConsole === id ? null : id);
+  };
 
-  return (
-    <div className="consoles-container">
-      {backendResponse.codeExecutionError && (
-        <div className="console console-error">
+  const getConsoleStyle = (id) => {
+    if (expandedConsole === id) {
+      return {
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        backgroundColor: "#fff",
+        zIndex: 9999,
+        overflow: "auto",
+        padding: "16px",
+        maxHeight: "none",
+      };
+    }
+    return {};
+  };
+
+  const blocks = [];
+
+  if (backendResponse.codeExecutionError) {
+    blocks.push({
+      id: "error",
+      type: "error",
+      content: (
+        <div className="console" style={getConsoleStyle("error")}>
+          <button
+            className="btn btn-primary expand-btn"
+            onClick={() => toggleExpand("error")}
+          >
+            {expandedConsole === "error" ? "Contraer" : "Expandir"}
+          </button>
           <pre className="code-output">{backendResponse.personalizedError}</pre>
           {backendResponse.originalError && (
             <details>
@@ -34,57 +58,132 @@ const OutputConsole = ({ backendResponse }) => {
             </details>
           )}
         </div>
-      )}
-
-      {backendResponse.type === 'map' && !backendResponse.codeExecutionError && (
-          <div className="map-container">
-              <iframe
-                title="Mapa Generado"
-                srcDoc={backendResponse.output}
-                className="map-iframe"
-              />
+      ),
+    });
+  } else if (backendResponse.type === "map") {
+    blocks.push({
+      id: "map",
+      type: "map",
+      content: (
+        <div className="map-container" style={getConsoleStyle("map")}>
+          <button
+            className="btn btn-primary expand-btn"
+            onClick={() => toggleExpand("map")}
+          >
+            {expandedConsole === "map" ? "Contraer" : "Expandir"}
+          </button>
+          <iframe
+            title="Mapa Generado"
+            srcDoc={backendResponse.output}
+            className="map-iframe"
+          />
+        </div>
+      ),
+    });
+  } else {
+    // Output solo
+    if (backendResponse.output && !backendResponse.plots?.length) {
+      blocks.push({
+        id: "output",
+        type: "console",
+        content: (
+          <div
+            className={`console ${backendResponse.codeEmptyWarning ? "console-warning" : ""}`}
+            style={getConsoleStyle("output")}
+          >
+            <button
+              className="btn btn-primary expand-btn"
+              onClick={() => toggleExpand("output")}
+            >
+              {expandedConsole === "output" ? "Contraer" : "Expandir"}
+            </button>
+            <pre className="code-output">{backendResponse.output}</pre>
           </div>
-      )}
+        ),
+      });
+    }
 
-      {backendResponse.type !== 'map' && !backendResponse.codeExecutionError && (
-        <>
-          {backendResponse.output && !backendResponse.plots?.length && (
-            <div className={`console ${backendResponse.codeEmptyWarning ? "console-warning" : ""}`}>
-              <pre className="code-output">{backendResponse.output}</pre>
-            </div>
-          )}
+    // Plots solo
+    if (!backendResponse.output && backendResponse.plots?.length) {
+      blocks.push({
+        id: "plots",
+        type: "console",
+        content: (
+          <div className="console" style={getConsoleStyle("plots")}>
+            <button
+              className="btn btn-primary expand-btn"
+              onClick={() => toggleExpand("plots")}
+            >
+              {expandedConsole === "plots" ? "Contraer" : "Expandir"}
+            </button>
+            {backendResponse.plots.map((plot, idx) => (
+              <Plot key={idx} data={plot.data} layout={plot.layout} />
+            ))}
+          </div>
+        ),
+      });
+    }
 
-          {!backendResponse.output && backendResponse.plots?.length > 0 && (
-            <div className="console">
-              {backendResponse.plots.map((plot, index) => (
-                <Plot key={index} data={plot.data} layout={plot.layout} />
-              ))}
-            </div>
-          )}
+    // Output + plots (separados)
+    if (backendResponse.output && backendResponse.plots?.length) {
+      blocks.push({
+        id: "output",
+        type: "console",
+        content: (
+          <div
+            className={`console ${backendResponse.codeEmptyWarning ? "console-warning" : ""}`}
+            style={getConsoleStyle("output")}
+          >
+            <button
+              className="btn btn-primary expand-btn"
+              onClick={() => toggleExpand("output")}
+            >
+              {expandedConsole === "output" ? "Contraer" : "Expandir"}
+            </button>
+            <pre className="code-output">{backendResponse.output}</pre>
+          </div>
+        ),
+      });
+      blocks.push({
+        id: "plots",
+        type: "console",
+        content: (
+          <div className="console" style={getConsoleStyle("plots")}>
+            <button
+              className="btn btn-primary expand-btn"
+              onClick={() => toggleExpand("plots")}
+            >
+              {expandedConsole === "plots" ? "Contraer" : "Expandir"}
+            </button>
+            {backendResponse.plots.map((plot, idx) => (
+              <Plot key={idx} data={plot.data} layout={plot.layout} />
+            ))}
+          </div>
+        ),
+      });
+    }
 
-          {backendResponse.output && backendResponse.plots?.length > 0 && (
-            <>
-              <div className="console">
-                <pre className="code-output">{backendResponse.output}</pre>
-              </div>
-              <div className="console">
-                {backendResponse.plots.map((plot, index) => (
-                  <Plot key={index} data={plot.data} layout={plot.layout} />
-                ))}
-              </div>
-            </>
-          )}
+    // Vacío
+    if (!backendResponse.output && !backendResponse.plots?.length) {
+      blocks.push({
+        id: "empty",
+        type: "console",
+        content: (
+          <div className="console" style={getConsoleStyle("empty")}>
+            <button
+              className="btn btn-primary expand-btn"
+              onClick={() => toggleExpand("empty")}
+            >
+              {expandedConsole === "empty" ? "Contraer" : "Expandir"}
+            </button>
+            <h5>Consola</h5>
+          </div>
+        ),
+      });
+    }
+  }
 
-          {!backendResponse.output && !backendResponse.plots?.length && (
-              <div className="console">
-                <h5>Consola</h5>
-              </div>
-            )
-          }
-        </>
-      )}
-    </div>
-  );
+  return <div className="consoles-container">{blocks.map((b) => b.content)}</div>;
 };
 
 export default OutputConsole;

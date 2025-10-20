@@ -79,7 +79,8 @@ const PythonEditor = ({
         </button>
         <CodeMirror
           value={frontendCode}
-          height="400px"
+          height="50vh"
+          margin-left="0.5vh"
           theme="light"
           readOnly={true}
           extensions={[python({ jsx: true })]}

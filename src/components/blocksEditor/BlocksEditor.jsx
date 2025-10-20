@@ -147,7 +147,10 @@ const BlocksEditor = ({ updateCode, isLoading, setIsLoading }) => {
         />
         <WorkspaceJsonUploader isLoading={isLoading} setIsLoading={setIsLoading} />
       </div>
-      <div id="blocklyDiv" style={{ height: "400px", width: "100%" }}></div>
+      <div id="blocklyDiv" style={
+        { height: "50vh", 
+        width: "99.5%" }
+        }></div>
       {openBlockInfoModal && (
         <BlockInfoModal {...block} mouseClickPosition={mouseClickPosition} />
       )}
