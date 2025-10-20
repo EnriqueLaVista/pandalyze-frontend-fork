@@ -13,7 +13,7 @@ export const initScatterBlock = () => {
       this.appendDummyInput().appendField(", title = ");
       this.appendValueInput("title").setCheck(null);
       this.appendDummyInput().appendField(")");
-      this.setInputsInline(true);
+      this.setInputsInline(false);
       this.setOutput(true, null);
       this.setColour(80);
       this.setHelpUrl("");
