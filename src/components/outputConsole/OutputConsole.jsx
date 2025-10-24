@@ -43,7 +43,7 @@ const OutputConsole = ({ backendResponse }) => {
       id: "error",
       type: "error",
       content: (
-        <div className="console" style={getConsoleStyle("error")}>
+        <div key="error" className="console" style={getConsoleStyle("error")}>
           <button
             className="btn btn-primary expand-btn"
             onClick={() => toggleExpand("error")}
@@ -65,7 +65,7 @@ const OutputConsole = ({ backendResponse }) => {
       id: "map",
       type: "map",
       content: (
-        <div className="map-container" style={getConsoleStyle("map")}>
+        <div key="map" className="map-container" style={getConsoleStyle("map")}>
           <button
             className="btn btn-primary expand-btn"
             onClick={() => toggleExpand("map")}
@@ -88,6 +88,7 @@ const OutputConsole = ({ backendResponse }) => {
         type: "console",
         content: (
           <div
+            key="output"
             className={`console ${backendResponse.codeEmptyWarning ? "console-warning" : ""}`}
             style={getConsoleStyle("output")}
           >
@@ -109,7 +110,7 @@ const OutputConsole = ({ backendResponse }) => {
         id: "plots",
         type: "console",
         content: (
-          <div className="console" style={getConsoleStyle("plots")}>
+          <div key="plots" className="console" style={getConsoleStyle("plots")}>
             <button
               className="btn btn-primary expand-btn"
               onClick={() => toggleExpand("plots")}
@@ -124,13 +125,14 @@ const OutputConsole = ({ backendResponse }) => {
       });
     }
 
-    // Output + plots (separados)
+    // Output + plots
     if (backendResponse.output && backendResponse.plots?.length) {
       blocks.push({
         id: "output",
         type: "console",
         content: (
           <div
+            key="output-mixed"
             className={`console ${backendResponse.codeEmptyWarning ? "console-warning" : ""}`}
             style={getConsoleStyle("output")}
           >
@@ -148,7 +150,7 @@ const OutputConsole = ({ backendResponse }) => {
         id: "plots",
         type: "console",
         content: (
-          <div className="console" style={getConsoleStyle("plots")}>
+          <div key="plots-mixed" className="console" style={getConsoleStyle("plots")}>
             <button
               className="btn btn-primary expand-btn"
               onClick={() => toggleExpand("plots")}
@@ -169,7 +171,7 @@ const OutputConsole = ({ backendResponse }) => {
         id: "empty",
         type: "console",
         content: (
-          <div className="console" style={getConsoleStyle("empty")}>
+          <div key="empty" className="console" style={getConsoleStyle("empty")}>
             <button
               className="btn btn-primary expand-btn"
               onClick={() => toggleExpand("empty")}
