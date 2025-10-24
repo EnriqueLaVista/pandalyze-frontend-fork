@@ -2,7 +2,10 @@
   "_signature": "PDLZ_v1::1757625724507",
   "data": {
     "variables": [
-      "lagosPorProvincia"
+      {
+        "id": "3859299497",
+        "name": "lagosPorProvincia"
+      }
     ],
     "csvsData": [
       {
@@ -33,7 +36,7 @@
             "x": -250,
             "y": 60,
             "fields": {
-              "variableSetterKey": "1"
+              "variableSetterKey": "3859299497"
             },
             "inputs": {
               "VALUE": {
@@ -83,7 +86,7 @@
                             "type": "variables_get",
                             "id": "+VSw0+znR!8hB]~:YE{}",
                             "fields": {
-                              "variableGetterKey": "1"
+                              "variableGetterKey": "3859299497"
                             }
                           }
                         },
@@ -97,7 +100,7 @@
                                   "type": "variables_get",
                                   "id": "cQR1A~@MJa|@X5iU)`o{",
                                   "fields": {
-                                    "variableGetterKey": "1"
+                                    "variableGetterKey": "3859299497"
                                   }
                                 }
                               }
@@ -114,7 +117,7 @@
                                   "type": "variables_get",
                                   "id": "/yjR+4_t:1^z7cRHJ#tb",
                                   "fields": {
-                                    "variableGetterKey": "1"
+                                    "variableGetterKey": "3859299497"
                                   }
                                 }
                               }

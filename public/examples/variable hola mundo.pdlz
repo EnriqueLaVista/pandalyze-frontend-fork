@@ -1,9 +1,7 @@
 {
   "_signature": "PDLZ_v1::1750198300554",
   "data": {
-    "variables": [
-      "tu_variable"
-    ],
+    "variables": [{"id":"850820733","name":"tu_variable"}],
     "csvsData": [],
     "blocks": {
       "blocks": {
@@ -15,7 +13,7 @@
             "x": 202,
             "y": 97,
             "fields": {
-              "variableSetterKey": "0"
+              "variableSetterKey": "850820733"
             },
             "inputs": {
               "VALUE": {
@@ -38,7 +36,7 @@
                       "type": "variables_get",
                       "id": "hIBB(MFHCT?wK5X;or1U",
                       "fields": {
-                        "variableGetterKey": "0"
+                        "variableGetterKey": "850820733"
                       }
                     }
                   }

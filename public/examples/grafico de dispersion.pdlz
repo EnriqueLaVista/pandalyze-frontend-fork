@@ -2,7 +2,10 @@
   "_signature": "PDLZ_v1::1757624247752",
   "data": {
     "variables": [
-      "lagos"
+      {
+        "id": "173470163",
+        "name": "lagos"
+      }
     ],
     "csvsData": [
       {
@@ -33,7 +36,7 @@
             "x": 38,
             "y": 111,
             "fields": {
-              "variableSetterKey": "0"
+              "variableSetterKey": "173470163"
             },
             "inputs": {
               "VALUE": {
@@ -61,7 +64,7 @@
                             "type": "variables_get",
                             "id": "vfT^/_6(Zm_NcG%qzhmo",
                             "fields": {
-                              "variableGetterKey": "0"
+                              "variableGetterKey": "173470163"
                             }
                           }
                         },
@@ -81,7 +84,7 @@
                                   "type": "variables_get",
                                   "id": "igbz?9$P_ew(AW]vu-Kv",
                                   "fields": {
-                                    "variableGetterKey": "0"
+                                    "variableGetterKey": "173470163"
                                   }
                                 }
                               }
@@ -104,7 +107,7 @@
                                   "type": "variables_get",
                                   "id": ".Jfy}gVx7=qS,N$foWIF",
                                   "fields": {
-                                    "variableGetterKey": "0"
+                                    "variableGetterKey": "173470163"
                                   }
                                 }
                               }

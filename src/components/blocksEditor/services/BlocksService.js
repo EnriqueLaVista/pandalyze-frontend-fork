@@ -123,9 +123,10 @@ const BlocksService = {
     var ret = '';
 
     try {
-      // sobreescribir variables.
-      // puede fallar si se modificó el contenido.
-      this.variables = workspace.variables;
+      // agregar variables guardadas en el workspace evitando duplicados.
+      this.variables = [...this.variables, ...workspace.variables].filter(
+        (v, i, arr) => arr.findIndex(o => o.id === v.id) === i
+      );
       this.updateVariablesDrowdown();
 
       // sobreescribir el workspace de blockly.
@@ -150,17 +151,11 @@ const BlocksService = {
   updateVariablesDrowdown() {
     // Actualizar las opciones de los bloques get y set
     Blockly.Blocks["variables_get"].generateOptions = function () {
-      return BlocksService.variables.map((variable, index) => [
-        variable,
-        index.toString(),
-      ]);
+      return BlocksService.variables.map(v => [v.name, v.id]);
     };
 
     Blockly.Blocks["variables_set"].generateOptions = function () {
-      return BlocksService.variables.map((variable, index) => [
-        variable,
-        index.toString(),
-      ]);
+      return BlocksService.variables.map(v => [v.name, v.id]);
     };
   },
 
@@ -237,7 +232,7 @@ const BlocksService = {
       return "El nombre de la variable no puede contener espacios.";
     };
   
-    if (this.variables?.includes(name)) {
+    if (this.variables?.some(v => v.name === name)) {
       return "La variable ya existe.";
     };
   
@@ -265,16 +260,29 @@ const BlocksService = {
     return "";
   },
 
+  nameToId (name, h = 5381) {
+    // Generar ID a partir de un string utilizando DJB2.
+    // Retorna un número entero positivo de 32 bits.
+    for (let i = 0; i < name.length; i++) {
+      h = (h * 33) ^ name.charCodeAt(i);
+    }
+    return (h >>> 0).toString();
+  },
+
   onCreateVariableClick(button) {
     const variableName = prompt("Nombra tu variable:");
 
     const ret = this.isValidVariable(variableName);
 
     if (!ret) {
-      this.variables.push(variableName);
+      this.variables.push({
+        id: this.nameToId(variableName),
+        name: variableName,
+      });
+      console.log(JSON.stringify(this.variables))
 
       this.updateVariablesDrowdown();
-      
+
       if (this.variables.length === 1) {
         // Actualizar la flyout en el workspace
         const flyout = Blockly.getMainWorkspace().getFlyout();
